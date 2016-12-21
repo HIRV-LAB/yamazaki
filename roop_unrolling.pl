@@ -112,13 +112,14 @@ my $flag = 0;
 my @roop_line;
 my $unroll_val; #ループ展開用変数保持変数
 my $for_roop; #for文を展開するときに使うカウンタ
+my $num_of_program; #生成プログラムの番号(ネストの深さで変わる)
+
 
 open(UNROLLED, ">", "unrolled_program.c") or die("Error:$!");
-
 #ここからサブルーチンだった部分
 for($n_of_lines = 1; $n_of_lines < $num; $n_of_lines++){
 
-	print "現在", $n_of_lines, "行目\n";
+	#print "現在", $n_of_lines, "行目\n";
 	if($program[$n_of_lines] =~ /for/){
 		my $val = $program[$n_of_lines]; #対象行の一次保存
 		$val =~ /\((.+)\s=/; #ループ展開が必要な可能性がある変数の特定 for(i=0; ~)の i等 (から" "=にマッチする文字列を抽出
@@ -128,7 +129,7 @@ for($n_of_lines = 1; $n_of_lines < $num; $n_of_lines++){
 		#$1にはfor文から抽出した変数が存在している　
 		#とりあえずどこまでがforループの処理なのかを特定し、
 		if($program[$n_of_lines] =~ /{/){ #for文の中に"{"がある場合
-			print "forの後にカッコを検出しました\n";
+			#print "forの後にカッコを検出しました\n";
 			$if_start[$start] = $n_of_lines + 1; #次の行からforループの処理が始まる
 			$roop_line[$k] = 1;
 			for ($for_count = $n_of_lines + 1; $roop_line[$k] > 0; $for_count++){
@@ -136,20 +137,17 @@ for($n_of_lines = 1; $n_of_lines < $num; $n_of_lines++){
 				if($program[$for_count] =~ /if.*[$unroll_val].*/){
 					#ループ展開が必要な変数があれば、フラグを立てる
 					$flag = 1;
-					print "ループ展開が必要なif文が検出された\n";
 				}
 
 				if($program[$for_count] =~ /{/){ #カッコがあるか判定
 					$roop_line[$k]++;
-					print "始まりのカッコが検出されました\n";
 				}
 				elsif($program[$for_count] =~ /}/){ #同上
 					$roop_line[$k]--;
-					print "終わりのカッコが検出されました\n";
 				}
 
 				if($roop_line[$k] == 0){ #ループの終了だったら
-					print "ループ解析終了\n";
+					#print "ループ解析終了\n";
 					$if_end[$k] = $for_count; #ループの終了行数を記録
 					$n_of_lines = $for_count;
 					$k++; #次の配列にループの開始と終了を記録するためのインクリメント
@@ -164,28 +162,38 @@ for($n_of_lines = 1; $n_of_lines < $num; $n_of_lines++){
 		$unroll_time[$n_of_lines] = <STDIN>;
 		
 		#ここから実際にループ展開をしていく
+
+		my $roop_time = 0; #ループ回数を記録するカウンタ
+
 		#指定された回数だけループ展開を行う
 		for($l = 0; $l < $unroll_time[$n_of_lines]; $l++){
 			#for文の中の処理のみ繰り返して出力する
+			#内部でのループカウンタ(なぜかうまいこと$lが動いていないため)
 			for($for_roop = $if_start[$start]; $for_roop < $for_count -1; $for_roop++){ 
-				
 				#対象の配列が含まれていたら
 				if($program[$for_roop] =~ /$unroll_val/){
-					$program[$for_roop] =~ s/$unroll_val/$l/;
-					print UNROLLED "$program[$for_roop]";
+
+
+					my $program_temp = $program[$for_roop];
+					$program_temp =~ s/$unroll_val/$roop_time/;
+					#print "ループ展開回数 =", "$roop_time\n";
+					print UNROLLED "$program_temp";
+					#$roop_time++;
 				}
 
 				#対象の配列が含まれていなかったら
 				else{
-				print UNROLLED "$program[$for_roop]";	
+				print UNROLLED "$program[$for_roop]";
 				}
 			}
+			$roop_time++;
+			#print "ループ展開がここで終わりました。\n";
 		}
 	}
 
 	else{
 		#for文が検出されなかった場合はそのまま書き込む
-		print "for文が検出されなかったので、そのまま書き込む\n";
+		#print "for文が検出されなかったので、そのまま書き込む\n";
 		print UNROLLED "$program[$n_of_lines]";
 	}
 }
