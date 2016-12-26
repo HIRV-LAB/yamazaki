@@ -6,7 +6,7 @@ void main(void)
 	int array2[100];
 	int vertex2[100][100];
 	int vertex3[100][100];
-	int switch_vertex3[]
+	int switch_vertex3[100][100][100]
 	int roop,j,tmp1,tmp2,tmp3,tmp4,tmp5; 
 
 	
@@ -223,78 +223,201 @@ void main(void)
   				if(vertex3[0][0][0] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][0][0]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][0][1] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][0][1]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][0][2] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][0][2]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][0][3] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][0][3]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][0][4] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][0][4]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][1][0] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][1][0]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][1][1] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][1][1]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][1][2] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][1][2]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][1][3] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][1][3]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][1][4] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][1][4]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][2][0] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][2][0]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][2][1] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][2][1]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][2][2] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][2][2]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][2][3] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][2][3]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][2][4] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][2][4]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][3][0] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][3][0]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][3][1] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][3][1]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][3][2] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][3][2]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][3][3] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][3][3]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][3][4] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][3][4]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][4][0] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][4][0]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][4][1] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][4][1]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][4][2] < 40){
     				printf("3次元配列のテスト\n");
     			}
+    			switch(switch_vertex3[0][4][2]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
   				if(vertex3[0][4][3] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[0][4][3]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   				if(vertex3[0][4][4] < 40){
     				printf("3次元配列のテスト\n");
     			}
-
-
+    			switch(switch_vertex3[0][4][4]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
+    			}
 }
