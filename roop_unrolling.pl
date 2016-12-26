@@ -157,6 +157,12 @@ sub roop_unrolling{
 						$variable[$v] = $unroll_val;
 						$flag = 1;
 					}
+
+					if($program[$for_count] =~ /switch.*[$unroll_val].*/){
+						#ループ展開が必要な変数があれば、フラグを立てる
+						$variable[$v] = $unroll_val;
+						$flag = 1;
+					}					
 					
 
 					if($program[$for_count] =~ /{/){ #カッコがあるか判定
