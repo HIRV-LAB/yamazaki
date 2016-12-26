@@ -6,6 +6,7 @@ void main(void)
 	int array2[100];
 	int vertex2[100][100];
 	int vertex3[100][100];
+	int switch_vertex3[100][100][100]
 	int roop,j,tmp1,tmp2,tmp3,tmp4,tmp5; //コメント
 
 	/*コメント*/
@@ -47,6 +48,11 @@ void main(void)
   			for(tmp5 = 0; tmp5 < 60; tmp5++){
   				if(vertex3[tmp3][tmp4][tmp5] < 40){
     				printf("3次元配列のテスト\n");
+    			}
+    			switch(switch_vertex3[tmp3][tmp4][tmp5]){
+    				case 1 : printf("switch文のサンプル1\n");
+    				case 2 : printf("switch文のサンプル2\n");
+    				case 3 : printf("switch文のサンプル3\n");
     			}
   			}		
   		}
