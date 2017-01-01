@@ -118,7 +118,9 @@ my @unrolled_line; #ループ展開したfor文の行数保持配列
 my $v = 0; #上記の汎用カウンタ
 my $q;
 my $roop_flag; #同じfor文を判定するのに用いるフラグ
-my $num_of_counter = 0;; #ループ展開数を入れる
+my $num_of_counter = 0; #ループ展開数を入れる
+my $counter_flag; #ループ回数をプログラム中から読み込めているかのフラグ
+my $tmp; #ループ回数を入れる変数
 
 print "type your new file name\n";
 $file = <STDIN>;
@@ -141,11 +143,32 @@ sub roop_unrolling{
 			print "展開の必要な可能性のある変数は", $1, "です\n";
 			$unroll_val = $1;
 
+			$counter_flag = 0;
+			#ループ展開する回数をfor( ~ ; i < 60; ~ )から抽出する処理
+			if($program[$n_of_lines] =~ /(;.*;)/ ){
+				 $tmp = $1;
+				#print "スプリットした文字列は", $tmp, "です\n";
+				if($tmp =~ /(<.*;)/) {
+					$tmp = $1;
+					#print "さらにスプリットした文字列は", $tmp, "です\n";
+					if($tmp =~ /([0-9]+)/){
+					$tmp = $1;
+					print "ループ回数は", $tmp, "です\n";
+					$counter_flag = 1;
+					}
+				}
+			}
 
+			while(1){
+				if($program[$n_of_lines] !~ /{/){
+					$n_of_lines++;
+				}
+				else{
+					last;
+				}
+			}
 			#$1にはfor文から抽出した変数が存在している　
 			#とりあえずどこまでがforループの処理なのかを特定し、
-			if($program[$n_of_lines] =~ /{/){ #for文の中に"{"がある場合
-				#print "forの後にカッコを検出しました\n";
 
 				#ここのforループの処理のみサブルーチン化する
 				$if_start[$start] = $n_of_lines + 1; #次の行からforループの処理が始まる
@@ -182,11 +205,13 @@ sub roop_unrolling{
 					}
 				}
 				#forループの検出処理が終わったら、そこの行数はスキップする処理
-			}	
+			#}
+
+			#{がなかった場合の処理を書く	
 
 			#以前に同じfor文を展開していないかをチェックする処理
 			$roop_flag = 0;
-			for($q = 0; $q < $v-1; $q++){
+			for($q = 0; $q < $v-1  ; $q++){
 				if($variable[$q] eq $variable[$v-1] and $unrolled_line[$q] == $unrolled_line[$v-1]){
 					$roop_flag = 1;
 					print "以前ループ展開されたfor文が含まれています\n";
@@ -195,14 +220,22 @@ sub roop_unrolling{
 					#ループ展開数の入力をスキップする処理を書く
 				}
 			}
-			if($roop_flag == 0){
-				print "何回ループ展開をしますか?\n"; 
-				$unroll_time[$n_of_lines] = <STDIN>;
-				$roop_num[$num_of_counter] = $unroll_time[$n_of_lines];
-				$num_of_counter++;
-			}
-			#ここから実際にループ展開をしていく
 
+			if($roop_flag == 0){
+				if($counter_flag == 0){
+					print "何回ループ展開をしますか?\n"; 
+					$unroll_time[$n_of_lines] = <STDIN>;
+				}
+				else{
+					$unroll_time[$n_of_lines] = $tmp;
+				}
+				$roop_num[$num_of_counter] = $unroll_time[$n_of_lines];
+				
+			}
+			#上記のif文の外に以下の1行を出すとうまいこといく
+			$num_of_counter++;
+
+			#ここから実際にループ展開をしていく
 			my $roop_time = 0; #ループ回数を記録するカウンタ
 
 			#指定された回数だけループ展開を行う
@@ -214,7 +247,7 @@ sub roop_unrolling{
 					if($program[$for_roop] =~ /$unroll_val/){
 
 						my $program_temp = $program[$for_roop];
-						$program_temp =~ s/$unroll_val/$roop_time/;
+						$program_temp =~ s/\[$unroll_val\]/\[$roop_time\]/m;
 						#print "ループ展開回数 =", "$roop_time\n";
 						print UNROLLED "$program_temp";
 						#$roop_time++;
