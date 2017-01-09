@@ -128,6 +128,8 @@ my @for_tmp; #forループ一時保存配列
 my $for_num; #上記のカウンタ
 my $u;
 my $program_temp; #ループ展開if文一時保存変数
+my $blank_num; #for文の前処理(一番目)がない場合のループ開始変数
+my $blank_flag; #上記のフラグ
 
 print "type your new file name\n";
 $file = <STDIN>;
@@ -135,8 +137,9 @@ utf8::decode($file);
 chomp($file);
 open(UNROLLED, ">", "$file") or die("Error:$!");
 
+open(VARIABLE, "> crest_variable.c");
 &for_check();
-
+close(VARIABLE, "> crest_variable.c");
 
 #ネストされたfor分を検出、処理する関数
 
@@ -149,6 +152,8 @@ sub for_check{
 		if($program[$n_of_lines] =~ /for*\s\(/){
 			print $n_of_lines,"行目にfor文を検出しました。\n";
 			my $val = $program[$n_of_lines]; #対象行の一次保存
+
+
 			@strlist1 = split(/\(/, $val);
 			#print "$strlist1[1]";
 			
@@ -162,6 +167,20 @@ sub for_check{
 				$for_num = 0; #forループ一時保存配列の初期化
 				&roop_unrolling();
 			}
+			elsif($strlist2[1]){ #二番目の式(制御式)が存在する(この辺からデバッグかな？　同じ処理をfor文の後に１行だけ続く括弧がない処理にも追加する必要がある)
+				my @list = split(/<=|>=|==|<|>|!=/,$strlist2[1]);
+				$list[1] =~ s/\s+//g; #スペースを削除する処理 
+				if($strlist2[2]){ #すべての要素がnullでない(無限ループとなっていない)
+					$unroll_val = $list[1];
+					$for_num = 0; #forループ一時保存配列の初期化
+					$blank_flag = 1;
+					&roop_unrolling();
+
+
+				#ループ展開数を読み込む処理
+				}
+			}
+
 			else{
 				print UNROLLED "$program[$n_of_lines]";
 			}
@@ -193,7 +212,7 @@ sub roop_unrolling{
 			if($program[$n_of_lines] =~ /\[$unroll_val\]/){
 				print "かっこのないforとifのループを検出しました\n";
 				&roop_number();
-				$program_temp = $program[$n_of_lines];
+				
 				print "何回ループ展開をしますか?\n"; 
 				my $time = <STDIN>;
 				chomp($time);
@@ -201,10 +220,14 @@ sub roop_unrolling{
 				for($u = 0; $u < $time; $u++){
 					#ループ展開の命令を書く
 					print $u, "回目の展開\n";
+					$program_temp = $program[$n_of_lines];
 					$program_temp =~ s/\[$unroll_val\]/\[$u\]/m;
 					print "$program_temp\n";
 					print UNROLLED "$program_temp";
 					print UNROLLED "$program[$n_of_lines+1]";
+					my @string1 = split(/\(/, $program_temp); #crest変数の宣言用に
+					my @string2 = split(/<=|>=|==|<|>|!=/,$string1[1]);
+					print VARIABLE "$string2[0]\n";
 				}
 				$for_tmp[$for_num] = $program[$n_of_lines];
 				$for_num++;
@@ -253,6 +276,12 @@ sub roop_number{ #ループ展開を行うfor文の展開回数の特定
 				print "ループ回数は", $tmp, "です\n";
 				$counter_flag = 1;
 			}
+		}
+		elsif($tmp =~ /(!.*\[.*\];)/){ #否定演算子があった場合
+			print $tmp,"ループ展開数を指定してください\n";
+			$tmp = <STDIN>;
+			chomp($tmp);
+			$counter_flag = 1;
 		}
 	}
 }
@@ -340,16 +369,31 @@ sub main{
 	my $roop_time = 0; #ループ回数を記録するカウンタ
 	if($flag == 1){
 		#指定された回数だけループ展開を行う
-		for($l = 0; $l < $unroll_time[$n_of_lines]; $l++){
+		if($blank_flag == 1){
+			print "変数の初期値を入力してください\n";
+			$l = <STDIN>;
+			chomp($l);
+			$blank_flag = 0;
+		}
+		else{
+			$l = 0;
+		}
+		for(; $l < $unroll_time[$n_of_lines]; $l++){
 			#for文の中の処理のみ繰り返して出力する
 			for($for_roop = $if_start[$start]; $for_roop < $for_count -1; $for_roop++){ 
 				#対象の配列が含まれていたら
-				if($program[$for_roop] =~ /$unroll_val/){
+				if($program[$for_roop] =~ /\[$unroll_val\]/){
 				 	$program_temp = $program[$for_roop];
 					$program_temp =~ s/\[$unroll_val\]/\[$roop_time\]/m;
 					#print "ループ展開回数 =", "$roop_time\n";
 					print UNROLLED "$program_temp";
-					#$roop_time++;
+					print "展開した後の変数は","$program_temp";
+					my @string1 = split(/\(/, $program_temp); #crest変数の宣言用に
+					my @string2 = split(/<=|>=|==|<|>|!=/,$string1[1]);
+					#print "展開した後の変数は","$string2[0]\n";
+					if($string2[0] !~ /\)/){
+					print VARIABLE "$string2[0]\n";
+					}
 				}
 
 				#対象の配列が含まれていなかったら
@@ -361,4 +405,5 @@ sub main{
 			#print "ループ展開がここで終わりました。\n";
 		}
 	}
+
 }
